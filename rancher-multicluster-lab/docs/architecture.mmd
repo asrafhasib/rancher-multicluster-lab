@@ -1,0 +1,22 @@
+flowchart TB
+    U["Administrator<br/>Web browser"] -->|HTTPS dashboard| R["Rancher Server<br/>v2.15.3"]
+    subgraph PC["Developer PC · Windows / WSL2 / Docker Desktop"]
+      R
+      R --- M["Local K3s<br/>Rancher management cluster"]
+      subgraph K1["KIND cluster · llm-inference"]
+        A1["Kubernetes API"]
+        W1["Workloads / Nodes"]
+        C1["Rancher cluster agent"]
+        A1 --- W1
+        C1 --- A1
+      end
+      subgraph K2["KIND cluster · wsl-kind-cluster"]
+        A2["Kubernetes API"]
+        W2["Workloads / Nodes"]
+        C2["Rancher cluster agent"]
+        A2 --- W2
+        C2 --- A2
+      end
+    end
+    C1 <-->|Outbound HTTPS / agent connection| R
+    C2 <-->|Outbound HTTPS / agent connection| R
